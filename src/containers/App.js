@@ -4,25 +4,25 @@ import CardList from "../components/CardList";
 import SearchBox from "../components/SearchBox";
 import Scroll from "../components/Scroll";
 import "./App.css";
-import { setSearchField } from "../actions";
+import { requestRobots, setSearchField } from "../actions";
 
-function App({ searchField, onSearchChange }) {
-  const [robots, setRobots] = useState([]);
-
+function App({
+  searchField,
+  onSearchChange,
+  loading,
+  error,
+  robots,
+  fetchingRobots,
+}) {
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((users) => {
-        setRobots(users);
-      });
-    // console.log(count)
-  }, []); // if you add count, only run if count changes.
+    fetchingRobots();
+  }, []);
 
   const filteredRobots = robots.filter((robot) => {
     return robot.name.toLowerCase().includes(searchField.toLowerCase());
   });
 
-  return !robots.length ? (
+  return loading ? (
     <h1>Loading</h1>
   ) : (
     <div className="tc">
@@ -36,12 +36,18 @@ function App({ searchField, onSearchChange }) {
 }
 
 const mapStateToProps = (state) => {
-  return { searchField: state.searchRobots.searchField };
+  return {
+    searchField: state.searchRobots.searchField,
+    loading: state.requestRobots.loading,
+    error: state.requestRobots.error,
+    robots: state.requestRobots.robots,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+    fetchingRobots: () => requestRobots(dispatch),
   };
 };
 
