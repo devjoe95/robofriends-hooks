@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import "./index.css";
 import App from "./containers/App";
-import registerServiceWorker from "./registerServiceWorker";
+import * as serviceWorker from "./serviceWorker";
 import "tachyons";
 import { requestRobots, searchRobots } from "./reducers";
 
@@ -18,4 +18,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
-registerServiceWorker();
+serviceWorker.register();
