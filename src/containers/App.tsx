@@ -56,7 +56,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     onSearchChange: (event: any) =>
       dispatch(setSearchField(event.target.value)),
-    fetchingRobots: () => requestRobots(dispatch),
+    fetchingRobots: () => dispatch(requestRobots()),
   };
 };
 
